@@ -2,6 +2,7 @@ import { channel } from "diagnostics_channel";
 import mongoose from "mongoose";
 
 const MONGODB_URL = process.env.MONGODB_URL!;
+const MONGODB_DB_NAME = process.env.MONGODB_DB_NAME || "myDatabase";
 if(!MONGODB_URL){
     throw new Error("please define mongoDB url is env file")
 }
@@ -18,10 +19,11 @@ export async function connToDB() {
     }
 
     if(!cached.promise){
-        const opts={
-            bufferCommands:true,
-            MaxPoolSize:10,
-        }
+        const opts = {
+          dbName: MONGODB_DB_NAME,
+          bufferCommands: true,
+          MaxPoolSize: 10,
+        };
         cached.promise = mongoose.connect(MONGODB_URL, opts).then( ()=> mongoose.connection)
 
 
