@@ -1,7 +1,7 @@
 import { NextRequest,NextResponse } from "next/server";
 import { connToDB } from "@/lib/db";
 import User from "@/models/user.model";
-import { error, log } from "console";
+
 
 export async function POST(request:NextRequest) {
 
