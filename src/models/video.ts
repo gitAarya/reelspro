@@ -1,7 +1,4 @@
 import mongoose, { Schema, model, models } from "mongoose";
-import bcrypt from "bcryptjs";
-import { title } from "process";
-import { types } from "util";
 
 export const VideoDimension={
     width:1080,
@@ -62,3 +59,6 @@ const VideoSchema = new Schema({
 {
     timestamps:true
 });
+
+const Video=models.Video || model<IVIDEO>("Video", VideoSchema);
+export default Video;
