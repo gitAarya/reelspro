@@ -1,6 +1,5 @@
 import withAuth from "next-auth/middleware";
 import { NextResponse } from "next/server";
-import path from "path";
 
 export default withAuth(
   function middleware() {
@@ -19,7 +18,7 @@ export default withAuth(
        if(pathname=== "/" || pathname.startsWith("/api/videos")){
         return true
        }
-        return !!token
+        return !token
       },
     },
   }

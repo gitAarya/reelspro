@@ -4,6 +4,7 @@ import { getUploadAuthParams } from "@imagekit/next/server";
 export async function GET() {
  
  try {
+    // authenticationParameter are token, signature, expire 
      const authenticationParameter = getUploadAuthParams({
        privateKey: process.env.NEXT_PRIVATE_KEY as string, // Never expose this on client side
        publicKey: process.env.NEXT_PUBLIC_PUBLIC_KEY as string,
