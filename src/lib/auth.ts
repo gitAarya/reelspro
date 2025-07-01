@@ -3,16 +3,19 @@ import  CredentialsProvider  from "next-auth/providers/credentials";
 import { connToDB } from "./db";
 import bcrypt from "bcryptjs";
 import User from "@/models/user.model";
+
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       name: "credentials",
       credentials: {
-        email: { label: "Email", type: "text" },
-        password: { label: "Password", type: "password" },
+        email: { label: "email", type: "email" },
+        password: { label: "password", type: "password" },
       },
       async authorize(credentials) {
-        if (!credentials?.email || credentials?.password) {
+        if (!credentials?.email || !credentials?.password) {
+          console.log(credentials?.email ,credentials?.password);
+          
           throw new Error(" email or password is missing");
         }
         try {
@@ -29,7 +32,10 @@ export const authOptions: NextAuthOptions = {
           if (!isValid) {
             throw new Error("invalid password");
           }
+          console.log("user found", user);
           return {
+            
+            
             id: user._id.toString(),
             email: user.email,
           };
