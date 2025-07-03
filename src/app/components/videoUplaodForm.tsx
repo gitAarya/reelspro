@@ -1,10 +1,14 @@
+"use client";
+
 import React, { useState } from "react";
 import { apiClient } from "@/lib/api-client";
 import FileUpload from "./FileUpload";
+import { VideoFormData } from "@/lib/api-client";
 
 function VideoUploadForm() {
   const [title, setTitle] = useState("");
   const [videoUrl, setVideoUrl] = useState("");
+  const [thumbnailUrl, setThumbnailUrl] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
@@ -19,20 +23,21 @@ function VideoUploadForm() {
         throw new Error("Title and video are required");
       }
 
-      await apiClient.createVideo({
+      const videoData: VideoFormData = {
         title,
+        description: "Uploaded via frontend", // Optional
         videoUrl,
-        description: "", // Add if needed
-        thumbnailUrl: "", // Add if needed
+        thumbnailUrl: thumbnailUrl || "https://ik.imagekit.io/default-thumbnail.jpg", // Replace or upload separately
         controls: true,
-        transfromation: {
+        transformation: {
           height: 1920,
-          width: 1080
-        }
-      });
+          width: 1080,
+        },
+      };
 
+      await apiClient.createVideo(videoData);
       setSuccess(true);
-    } catch (error:any) {
+    } catch (error: any) {
       setError(error.message || "Upload failed");
     } finally {
       setIsSubmitting(false);
@@ -41,13 +46,17 @@ function VideoUploadForm() {
 
   if (success) {
     return (
-      <div>
-        <h2>Upload Successful!</h2>
-        <button onClick={() => {
-          setSuccess(false);
-          setTitle("");
-          setVideoUrl("");
-        }}>
+      <div className="text-center">
+        <h2 className="text-lg font-semibold text-green-600">Upload Successful!</h2>
+        <button
+          onClick={() => {
+            setSuccess(false);
+            setTitle("");
+            setVideoUrl("");
+            setThumbnailUrl("");
+          }}
+          className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+        >
           Upload Another
         </button>
       </div>
@@ -55,41 +64,9 @@ function VideoUploadForm() {
   }
 
   return (
-    <div>
-      <h2>Upload Video</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Title*</label>
-          <input
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
-          />
-        </div>
-
-        <div>
-          <label>Video*</label>
-          {videoUrl ? (
-            <div>Video uploaded</div>
-          ) : (
-            <FileUpload
-              fileType="video"
-              onSuccess={(res) => setVideoUrl(res.url)}
-            />
-          )}
-        </div>
-
-        {error && <div style={{color: 'red'}}>{error}</div>}
-
-        <button
-          type="submit"
-          disabled={isSubmitting || !title || !videoUrl}
-        >
-          {isSubmitting ? 'Uploading...' : 'Submit'}
-        </button>
-      </form>
-    </div>
+    <form onSubmit={handleSubmit} className="space-y-4 max-w-md mx-auto">
+      
+    </form>
   );
 }
 
