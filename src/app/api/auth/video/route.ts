@@ -72,7 +72,7 @@ export async function POST(request: NextRequest) {
         transfromation: {
             height: 1920,
             width: 1080,
-            quality: body?.transfromation?.quality || 100,
+            quality: body?.transformation?.quality || 100,
         }
       };
       const NewVideo = await Video.create(videoData);

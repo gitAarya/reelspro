@@ -16,7 +16,7 @@ export default withAuth(
       }
         
 
-      if(pathname==="/" || pathname.startsWith("/api/videos")){
+      if(pathname==="/" || pathname.startsWith("/video")){
         return true;
      }
 

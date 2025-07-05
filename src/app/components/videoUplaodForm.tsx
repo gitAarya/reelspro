@@ -1,73 +1,74 @@
-"use client";
+"use client"
+import { useState } from 'react';
+import { apiClient } from '@/lib/api-client';
+import FileUpload from './FileUpload';
 
-import React, { useState } from "react";
-import { apiClient } from "@/lib/api-client";
-import FileUpload from "./FileUpload";
-import { VideoFormData } from "@/lib/api-client";
+const VideoUploadPage = () => {
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [error,setError] = useState("")
 
-function VideoUploadForm() {
-  const [title, setTitle] = useState("");
-  const [videoUrl, setVideoUrl] = useState("");
-  const [thumbnailUrl, setThumbnailUrl] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState(false);
+  const handleUploadSuccess = async (uploadResponse: any) => {
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setError("");
 
     try {
-      if (!title || !videoUrl) {
-        throw new Error("Title and video are required");
-      }
-
-      const videoData: VideoFormData = {
+      const videoData = {
         title,
-        description: "Uploaded via frontend", // Optional
-        videoUrl,
-        thumbnailUrl: thumbnailUrl || "https://ik.imagekit.io/default-thumbnail.jpg", // Replace or upload separately
-        controls: true,
-        transformation: {
-          height: 1920,
-          width: 1080,
-        },
+        description,
+        videoUrl: uploadResponse.url,
+        thumbnailUrl: uploadResponse.thumbnailUrl as string, // if available
+        duration: uploadResponse.duration as string, // if available
+        // other video fields as needed
       };
-
+      console.log(videoData);
+      
       await apiClient.createVideo(videoData);
-      setSuccess(true);
-    } catch (error: any) {
-      setError(error.message || "Upload failed");
-    } finally {
-      setIsSubmitting(false);
+      alert('Video created successfully!');
+
+
+    } catch (error) {
+     console.error(error)
+     
+      alert('Failed to save video details');
     }
   };
 
-  if (success) {
-    return (
-      <div className="text-center">
-        <h2 className="text-lg font-semibold text-green-600">Upload Successful!</h2>
-        <button
-          onClick={() => {
-            setSuccess(false);
-            setTitle("");
-            setVideoUrl("");
-            setThumbnailUrl("");
-          }}
-          className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-        >
-          Upload Another
-        </button>
-      </div>
-    );
-  }
-
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 max-w-md mx-auto">
+    <form onSubmit={handleUploadSuccess}>
+          <div>
+      <h1>Upload New Video</h1>
       
-    </form>
-  );
-}
+      <input
+        type="text"
+        placeholder="Title"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+      />
+      
+      <textarea
+        placeholder="Description"
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+      />
+      <br />
+      <h1>video</h1>
+      <FileUpload
+        onSuccess={handleUploadSuccess}
+        fileType="video"
+      />
+      <br />
+      <h1>thumabnail</h1>
+      <FileUpload
+        onSuccess={handleUploadSuccess}
+        fileType="image"
+      />
+     
+    </div>
+     <button type="submit">upload</button>
 
-export default VideoUploadForm;
+    </form>
+
+  );
+};
+
+export default VideoUploadPage;
