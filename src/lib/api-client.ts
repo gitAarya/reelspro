@@ -39,7 +39,7 @@ class ApiClient{
     }
   
     async createVideo(videoData: VideoFormData) {
-    return this.fetch("/video", {
+    return this.fetch("/auth/video", {
       method: "POST",
       body: videoData,
     });

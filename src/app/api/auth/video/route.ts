@@ -42,6 +42,8 @@ export async function POST(request: NextRequest) {
     try {
         
        const session = await getServerSession(authOptions);
+       console.log("session",session);
+       
        if (!session) {
         return NextResponse.json(
             {
@@ -54,7 +56,11 @@ export async function POST(request: NextRequest) {
        }
 
        await connToDB();
+    //    console.log("body json ", await request.json());
+       
       const body: IVIDEO = await request.json();
+      console.log("body", body);
+      
       if (!body.title || !body.description || !body.videoUrl || !body.thumbnailUrl) {
         return NextResponse.json(
             {

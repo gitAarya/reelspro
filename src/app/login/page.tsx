@@ -1,6 +1,6 @@
 "use client"
 import { signIn } from "next-auth/react"
-import { useRouter } from "next/navigation"
+import { redirect, useRouter } from "next/navigation"
 import { useState } from "react"
 
 export default function LoginPage() {
@@ -28,6 +28,7 @@ export default function LoginPage() {
       } else if (result?.url) {
         window.location.href = result.url
       }
+      
     } catch (err) {
       setError("An unexpected error occurred")
     }

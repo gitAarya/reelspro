@@ -16,7 +16,7 @@ export default withAuth(
       }
         
 
-      if(pathname==="/" || pathname.startsWith("/video")){
+      if(pathname==="/" || pathname.startsWith("/video") || pathname.startsWith("/upload") || pathname.startsWith("/dashboard") || pathname.startsWith("/profile") || pathname.startsWith("/settings")) {
         return true;
      }
 
