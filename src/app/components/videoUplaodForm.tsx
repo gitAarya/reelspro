@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { apiClient } from '@/lib/api-client';
 import FileUpload from './FileUpload';
+import { log } from 'console';
 
 const VideoUploadPage = () => {
   const [title, setTitle] = useState('');
@@ -15,6 +16,8 @@ const VideoUploadPage = () => {
     setVideoFile({
       url: uploadResponse.url
     });
+    // console.log(uploadResponse?.url);
+    
   };
 
   const handleThumbnailUploadSuccess = (uploadResponse: any) => {
@@ -44,7 +47,7 @@ const VideoUploadPage = () => {
         videoUrl: videoFile.url,
         thumbnailUrl: thumbnailFile?.url || ''
       };
-      console.log("vdo data",videoData);
+      // console.log("vdo data",videoData);
       
 
       await apiClient.createVideo(videoData);
@@ -62,6 +65,21 @@ const VideoUploadPage = () => {
       setIsSubmitting(false);
     }
   };
+
+  const handleGenerateThumbnail = async () => {
+    if(!videoFile){
+      alert("please upload the video file first")
+    }
+    const greneratedThumbnail= await fetch(`${videoFile?.url}/ik-thumbnail.jpg?tr=so-10`)
+    // console.log(greneratedThumbnail.url);
+    setThumbnailFile({
+      url:greneratedThumbnail.url
+    })
+
+    
+    
+  }
+
 
   return (
     <form onSubmit={handleSubmit} className="flex items-center justify-center flex-col p-4">
@@ -97,12 +115,15 @@ const VideoUploadPage = () => {
           )}
         </div>
         
-        <div className="space-y-2">
+        <div className="space-y-2 relative">
           <h2 className="text-xl font-semibold text-orange-600">Thumbnail</h2>
+          <button className='absolute left-4 right-1 top-12 bg-blue-600 w-50 ml-25 cursor-pointer' onClick={handleGenerateThumbnail}> Generate Thumbnail</button>
+
           <FileUpload
             onSuccess={handleThumbnailUploadSuccess}
             fileType="image"
           />
+          
           {thumbnailFile && (
             <div className="flex items-center text-sm text-green-600">
               <span className="mr-2">✓</span>

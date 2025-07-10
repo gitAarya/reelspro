@@ -14,7 +14,7 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
-          console.log(credentials?.email ,credentials?.password);
+          // console.log(credentials?.email ,credentials?.password);
           
           throw new Error(" email or password is missing");
         }
@@ -32,7 +32,7 @@ export const authOptions: NextAuthOptions = {
           if (!isValid) {
             throw new Error("invalid password");
           }
-          console.log("user found", user);
+          // console.log("user found", user);
           return {
             
             

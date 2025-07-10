@@ -36,7 +36,7 @@ export async function POST(request:NextRequest) {
             password,
         }
       )
-      console.log(user);
+      // console.log(user);
       
 
       return NextResponse.json(

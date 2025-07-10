@@ -97,12 +97,13 @@ const FileUpload = ({ onSuccess, onProgress, fileType }: FileUploadProps) => {
         filePath: uploadResponse.filePath,
         // Add any other properties you need
       });
-            console.log("Upload response:", uploadResponse);
+            // console.log("Upload response:", uploadResponse);
     } catch (error) {
       console.error("Error during file upload:", error);
       setError("File upload failed. Please try again.");
     } finally {
       setUploading(false);
+      progress && setProgress(0); // Reset progress after upload
     }
   };
    

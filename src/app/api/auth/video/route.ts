@@ -22,7 +22,8 @@ export async function GET()
                [],{status:200}
             )
          }
-
+         console.log(videos);
+         
          return NextResponse.json(
             videos
          )
@@ -59,7 +60,7 @@ export async function POST(request: NextRequest) {
     //    console.log("body json ", await request.json());
        
       const body: IVIDEO = await request.json();
-      console.log("body", body);
+    //   console.log("body", body);
       
       if (!body.title || !body.description || !body.videoUrl || !body.thumbnailUrl) {
         return NextResponse.json(
