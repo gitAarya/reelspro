@@ -10,7 +10,7 @@ export async function GET()
 
     try {
         connToDB();
-         const videos = await Video.findOne({}).sort({ createdAt: -1 }).lean()
+         const videos = await Video.find({}).sort({ createdAt: 1 }).lean()
          if(!videos){
             return Response.json(
                 { error: "No video found" },
