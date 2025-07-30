@@ -19,87 +19,59 @@ export default function Header() {
   };
 
   return (
-    <div className="navbar bg-base-300 sticky top-0 z-40">
-      <div className="">
-        {/* Left side - Logo/Brand */}
-        <div className="">
-          <Link
-            href="/"
-            className=""
-            prefetch={true}
-            onClick={() =>
-              showNotification("Welcome to ImageKit ReelsPro", "info")
-            }
-          >
-            <Home className="" />
-            Video with AI
-          </Link>
-        </div>
+<div className="navbar w-full bg-emerald-400 flex flex-row justify-between fixed top-0 left-0 z-50">
+  <div className="flex flex-row w-lg text-left">
+    <Link
+      href="/"
+      className="btn btn-ghost px-2 text-xl gap-2 normal-case hover:bg-transparent"
+      prefetch={true}
 
-        {/* Right side - Navigation/Actions */}
-        <div className="">
-          {/* Add any additional navigation items here if needed */}
-          
-          {/* User dropdown */}
-          <div className="dropdown dropdown-end">
-            <div
-              tabIndex={0}
-              role="button"
-              className=""
-            >
-              <User className="w-5 h-5" />
-            </div>
-            <ul
-              tabIndex={0}
-              className="dropdown-content z-[1] "
-            >
-              {session ? (
-                <>
-                  <li className="px-4 py-1">
-                    <span className="text-sm opacity-70">
-                      {session.user?.email?.split("@")[0]}
-                    </span>
-                  </li>
-                  <div className="divider my-1"></div>
+    >
+      <span className="truncate font-bold">ImageKit ReelsPro</span>
+    </Link>
+  </div>
+  
+  <div className=" flex flex-row w-fit ">
+    {session && (
+      <Link 
+        href="/upload"
+        className="btn btn-ghost btn-sm hidden sm:inline-flex"
+        onClick={() => showNotification("Welcome to Admin Dashboard", "info")}
+      >
+        <span className="hidden md:inline bg-amber-700 cursor-pointer">Video Upload</span> 
+      </Link>
+    )}
+    
+    <div className=" flex flex-row w-fit">
+      
+      <ul tabIndex={0} className="mx-6">
+        {session ? (
+          <>
+           <div className="flex flex-row w-fit"> 
+            <li className="mx-3 shadow-lg bg-emerald-700">
+              <div className="text-md truncate">{session.user?.email}</div>
+            </li>
+            <div className="divider my-0"></div>
 
-                  <li>
-                    <Link
-                      href="/upload"
-                      className="px-4 py-2 hover:bg-base-200 block w-full"
-                      onClick={() =>
-                        showNotification("Welcome to Admin Dashboard", "info")
-                      }
-                    >
-                      Video Upload
-                    </Link>
-                  </li>
-
-                  <li>
-                    <button
-                      onClick={handleSignOut}
-                      className="px-4 py-2 text-error hover:bg-base-200 w-full text-left"
-                    >
-                      Sign Out
-                    </button>
-                  </li>
-                </>
-              ) : (
-                <li>
-                  <Link
-                    href="/login"
-                    className="px-4 py-2 hover:bg-base-200 block w-full"
-                    onClick={() =>
-                      showNotification("Please sign in to continue", "info")
-                    }
-                  >
-                    Login
-                  </Link>
-                </li>
-              )}
-            </ul>
-          </div>
-        </div>
-      </div>
+            <li className="mx-3 bg-amber-600 shadow-lg ">
+              <button 
+                onClick={handleSignOut} 
+                className="text-error hover:bg-error/10 cursor-pointer"
+              >
+                Sign Out
+              </button>
+            </li></div>
+          </>
+        ) : (
+          <li>
+            <Link href="/login" className="hover:bg-base-200">
+              Login
+            </Link>
+          </li>
+        )}
+      </ul>
     </div>
+  </div>
+</div>
   );
 }
