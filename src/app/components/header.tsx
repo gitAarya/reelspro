@@ -4,10 +4,13 @@ import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import { Home, User } from "lucide-react";
 import { useNotification } from "./Notification";
+import { usePathname } from "next/navigation";
 
 export default function Header() {
   const { data: session } = useSession();
   const { showNotification } = useNotification();
+
+  const pathName=usePathname()
 
   const handleSignOut = async () => {
     try {
@@ -18,8 +21,17 @@ export default function Header() {
     }
   };
 
+  const handleSearchName=  (event:{target:{value:string}})=>{
+
+    console.log(event.target.value);
+    
+
+  }
+
   return (
-<div className="navbar w-full bg-emerald-400 flex flex-row justify-between fixed top-0 left-0 z-50">
+
+    <>
+ {/* <div className="navbar w-full bg-emerald-400 flex flex-row justify-between fixed top-0 left-0 z-50">
   <div className="flex flex-row w-lg text-left">
     <Link
       href="/"
@@ -72,6 +84,34 @@ export default function Header() {
       </ul>
     </div>
   </div>
-</div>
+</div>  */}
+
+  <div id="topNav" className="fixed bg-white z-30 flex items-center w-full border-b h-[60px]">
+  <div className={`flex items-center justify-between gap-6 w-full px-4 mx-auto ${pathName==='/'?'max-w-[1150px]':''} `}>
+    <Link href="/">
+    <img src="/tiktok-logo.png" alt="icon"  className="min-w-[115px] w-[115px]" />
+    </Link>
+
+    <div className="relative hidden md:flex items-center justify-end bg-[#f1f1f2] p-1 rounded-full max-w-[430px] w-full">
+            <input type="text" onChange={handleSearchName} className="w-full pl-3 my-2 text-black bg-transparent placeholder-[#6b6666] text-[15px] "  placeholder="search Accounts"/>
+
+           <div className=" absolute bg-white max-w-[910px] h-auto w-full z-20 left-0 top-12 border p-1">
+      <div className="p-1">
+        <Link href={`/user/1`} className="flex items-center justify-between w-full cursor-pointer text-black hover:bg-[#f12b56] p-1 px-2 hover:text-white">
+        <div className=" flex items-center">
+          <img className="rounded-md" width="40" src="https://placehold.co/400" />
+          <div className="truncate ml-2 ">John weeks dev</div>
+        </div>
+        </Link>
+      </div>
+
+     </div>
+    </div>
+
+  </div>
+  </div>
+    
+    </>
+
   );
 }

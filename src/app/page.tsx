@@ -16,7 +16,7 @@ export default function Home() {
       <Header/>
       </div>
       <div>
-        <VideoFeed/>
+        {/* <VideoFeed/> */}
       </div>
 
       
