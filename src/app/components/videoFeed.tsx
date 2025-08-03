@@ -28,35 +28,51 @@ export default function VideoFeed() {
     fetchVideos();
   }, []);
 
+  console.log(videos);
+  
+
+
+
   return (
-<div
-  className="h-[60%] w-full overflow-y-scroll snap-y snap-mandatory relativ items-center justify-center"
-  ref={containerRef}
->
-  {videos.map((video: Video, index: number) => (
-    <div
-      key={index}
-      className="h-screen w-full flex flex-col items-center justify-center bg-black snap-start relative"
-    >
-      {/* Video container with relative positioning */}
-      <div className="relative h-[80%] w-full flex items-center justify-center">
-        <video
-          src={video.videoUrl}
-          controls
-          autoPlay
-          loop
-          muted
-          className="h-full w-auto max-w-full object-contain"
-        />
-        
-        {/* Text overlay - positioned absolutely within video container */}
-        <div className="absolute left-5 top-5 p-4 bg-black/50 text-white rounded-lg max-w-[80%]">
-          <p className="font-bold text-xl mb-2">{video.title}</p>
-          <p className="text-sm">{video.description}</p>
+    <>
+
+
+    <div className=" flex mx-[35%]">
+      <div className="relative min-h-[480px] max-h-[780px] max-w-[660px] flex items-center bg-black rounded-xl cursor-pointer">
+        <div
+          className="overflow-y-scroll snap-y snap-mandatory relative w-full h-full items-center justify-center"
+          ref={containerRef}
+        >
+          {videos.map((video: Video, index: number) => (
+            <div
+              key={index}
+              className="h-screen w-full flex flex-col items-center justify-center bg-black snap-start relative"
+            >
+              {/* Video container */}
+              <div className="relative h-[80%] w-full flex items-center justify-center">
+                <video
+                  src={video.videoUrl}
+                  controls
+                  autoPlay
+                  loop
+                  muted
+                  className="h-full w-auto max-w-full object-contain "
+                />
+
+                {/* Overlay text */}
+                <div className="absolute left-5 bottom-32 p-4 bg-black/50 text-white rounded-lg max-w-[80%]">
+                  <p className="font-bold text-xl mb-2">{video.title}</p>
+                  <p className="text-sm">{video.description}</p>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>
-  ))}
-</div>
+
+
+    </>
+
   );
 }

@@ -5,12 +5,17 @@ import { useSession, signOut } from "next-auth/react";
 import { Home, User } from "lucide-react";
 import { useNotification } from "./Notification";
 import { usePathname } from "next/navigation";
+import { BiSearch, BiUser } from "react-icons/bi";
+import { AiOutlinePlus } from "react-icons/ai";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { FiLogOut } from "react-icons/fi";
 
 export default function Header() {
   const { data: session } = useSession();
   const { showNotification } = useNotification();
 
-  const pathName=usePathname()
+  const pathName = usePathname();
+
 
   const handleSignOut = async () => {
     try {
@@ -21,97 +26,83 @@ export default function Header() {
     }
   };
 
-  const handleSearchName=  (event:{target:{value:string}})=>{
 
-    console.log(event.target.value);
-    
 
-  }
+
 
   return (
-
     <>
- {/* <div className="navbar w-full bg-emerald-400 flex flex-row justify-between fixed top-0 left-0 z-50">
-  <div className="flex flex-row w-lg text-left">
-    <Link
-      href="/"
-      className="btn btn-ghost px-2 text-xl gap-2 normal-case hover:bg-transparent"
-      prefetch={true}
-
-    >
-      <span className="truncate font-bold">ImageKit ReelsPro</span>
-    </Link>
-  </div>
-  
-  <div className=" flex flex-row w-fit ">
-    {session && (
-      <Link 
-        href="/upload"
-        className="btn btn-ghost btn-sm hidden sm:inline-flex"
-        onClick={() => showNotification("Welcome to Admin Dashboard", "info")}
+      <div
+        id="topNav"
+        className="fixed bg-white z-30 flex items-center w-full border-b h-[60px]"
       >
-        <span className="hidden md:inline bg-amber-700 cursor-pointer">Video Upload</span> 
-      </Link>
-    )}
-    
-    <div className=" flex flex-row w-fit">
-      
-      <ul tabIndex={0} className="mx-6">
-        {session ? (
-          <>
-           <div className="flex flex-row w-fit"> 
-            <li className="mx-3 shadow-lg bg-emerald-700">
-              <div className="text-md truncate">{session.user?.email}</div>
-            </li>
-            <div className="divider my-0"></div>
+        <div
+          className={`flex items-center justify-between gap-6 w-full px-4 mx-auto ${
+            pathName === "/" ? "max-w-[1150px]" : ""
+          } `}
+        >
+          <Link href="/">
+            <img
+              src="/tiktok-logo.png"
+              alt="icon"
+              className="min-w-[115px] w-[115px]"
+            />
+          </Link>
 
-            <li className="mx-3 bg-amber-600 shadow-lg ">
-              <button 
-                onClick={handleSignOut} 
-                className="text-error hover:bg-error/10 cursor-pointer"
-              >
-                Sign Out
-              </button>
-            </li></div>
-          </>
-        ) : (
-          <li>
-            <Link href="/login" className="hover:bg-base-200">
-              Login
-            </Link>
-          </li>
-        )}
-      </ul>
-    </div>
-  </div>
-</div>  */}
-
-  <div id="topNav" className="fixed bg-white z-30 flex items-center w-full border-b h-[60px]">
-  <div className={`flex items-center justify-between gap-6 w-full px-4 mx-auto ${pathName==='/'?'max-w-[1150px]':''} `}>
-    <Link href="/">
-    <img src="/tiktok-logo.png" alt="icon"  className="min-w-[115px] w-[115px]" />
-    </Link>
-
-    <div className="relative hidden md:flex items-center justify-end bg-[#f1f1f2] p-1 rounded-full max-w-[430px] w-full">
-            <input type="text" onChange={handleSearchName} className="w-full pl-3 my-2 text-black bg-transparent placeholder-[#6b6666] text-[15px] "  placeholder="search Accounts"/>
-
-           <div className=" absolute bg-white max-w-[910px] h-auto w-full z-20 left-0 top-12 border p-1">
-      <div className="p-1">
-        <Link href={`/user/1`} className="flex items-center justify-between w-full cursor-pointer text-black hover:bg-[#f12b56] p-1 px-2 hover:text-white">
-        <div className=" flex items-center">
-          <img className="rounded-md" width="40" src="https://placehold.co/400" />
-          <div className="truncate ml-2 ">John weeks dev</div>
+          <div className="flex items-center gap-3">
+            <button className="flex items-center border rounded-sm py-[6px] hover:bg-gray-100 pl-1.5">
+              <AiOutlinePlus size="22" color="#000000" />
+              <span className="px-2 text-black  font-medium text-[15px]">
+                <Link
+                  href="/upload"
+                  className="btn btn-ghost btn-sm hidden sm:inline-flex"
+                  onClick={() =>
+                    showNotification("Welcome to Admin Dashboard", "info")
+                  }
+                >
+                  <span className="hidden md:inline cursor-pointer">
+                    Video Upload
+                  </span>
+                </Link>
+              </span>
+            </button>
+            {!session ? (
+              <div className="flex items-center ">
+                <button className="flex items-center bg-[#f02c56] text-white border rounded-md px-3 py-[6px]">
+                  <span className="whitespace-nowrap mx-4 font-medium text-[15px] ">
+                    {" "}
+                    <Link href="/login" className="hover:bg-base-200">
+                      Login
+                    </Link>{" "}
+                  </span>
+                </button>
+                <BsThreeDotsVertical color="#161724" size="25" />
+              </div>
+            ) : (
+              <div className="flex items-center  ">
+                <div className="relative flex flex-row">
+                  <div
+                    className={` top-6 p-3.5 flex items-center w-full justify-start py-3 px-2 hover:bg-gray-100 cursor-pointer `}
+                  >
+                    <BiUser size={20} color="black" />
+                    <span className="pl-2 font-semibold text-sm text-black p-3">
+                      {" "}
+                      {session.user?.email}
+                    </span>
+                  </div>
+                  <button onClick={handleSignOut}>
+                    <FiLogOut size={22} color="black" />
+                    <span className="pl-2 font-semibold text-sm text-black">
+                      {" "}
+                      logout
+                    </span>
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
-        </Link>
       </div>
-
-     </div>
-    </div>
-
-  </div>
-  </div>
-    
     </>
-
   );
 }
